@@ -4,14 +4,20 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 15.0f;
+    public float padding = 1;
 
-		float xmin = -5;
-		float xmax = 5;
+    float xmin = -5;
+    float xmax = 5;
 
     // Use this for initialization
     void Start()
     {
-
+        // distance between camera and player
+        float distance = transform.position.z - Camera.main.transform.position.z;
+        Vector3 leftMost = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, distance));
+        Vector3 rightMost = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, distance));
+        xmin = leftMost.x + padding;
+        xmax = rightMost.x - padding;
     }
 
     // Update is called once per frame
@@ -26,9 +32,9 @@ public class PlayerController : MonoBehaviour
             transform.position += Vector3.right * speed * Time.deltaTime;
         }
 
-				// player restricted to gamespace
-				float newX = Mathf.Clamp(transform.position.x, xmin, xmax);
+        // player restricted to gamespace
+        float newX = Mathf.Clamp(transform.position.x, xmin, xmax);
 
-				transform.position = new Vector3(newX, 0, 0);
+        transform.position = new Vector3(newX, 0, 0);
     }
 }
