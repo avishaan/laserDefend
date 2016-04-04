@@ -5,6 +5,9 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 15.0f;
 
+		float xmin = -5;
+		float xmax = 5;
+
     // Use this for initialization
     void Start()
     {
@@ -16,11 +19,16 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-					transform.position += new Vector3(-speed * Time.deltaTime, 0, 0);
+            transform.position += Vector3.left * speed * Time.deltaTime;
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-					transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
+            transform.position += Vector3.right * speed * Time.deltaTime;
         }
+
+				// player restricted to gamespace
+				float newX = Mathf.Clamp(transform.position.x, xmin, xmax);
+
+				transform.position = new Vector3(newX, 0, 0);
     }
 }
