@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 15.0f;
     public float padding = 1;
+    public float startingPosition = -4.0f;
 
     float xmin = -5;
     float xmax = 5;
@@ -35,6 +36,6 @@ public class PlayerController : MonoBehaviour
         // player restricted to gamespace
         float newX = Mathf.Clamp(transform.position.x, xmin, xmax);
 
-        transform.position = new Vector3(newX, 0, 0);
+        transform.position = new Vector3(newX, startingPosition, 0);
     }
 }
