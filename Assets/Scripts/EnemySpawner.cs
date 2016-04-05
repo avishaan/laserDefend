@@ -7,6 +7,7 @@ public class EnemySpawner : MonoBehaviour
     public float width = 10f;
     public float height = 5f;
     public float speed = 5f;
+    public float spawnDelay = 0.5f;
 
     private bool movingRight = true;
     private float xmax;
@@ -24,11 +25,29 @@ public class EnemySpawner : MonoBehaviour
         xmax = rightBoundary.x;
         xmin = leftBoundary.x;
 
-        SpawnEnemies();
+        SpawnUntilFull();
 
     }
 
-    void SpawnEnemies(){
+    void SpawnUntilFull()
+    {
+        Transform freePosition = NextFreePosition();
+        if (freePosition)
+        {
+            GameObject enemy = Instantiate(enemyPrefab, freePosition.position, Quaternion.identity) as GameObject;
+            enemy.transform.parent = freePosition;
+        }
+
+        if (NextFreePosition())
+        {
+            Invoke("SpawnUntilFull", spawnDelay);
+        }
+
+    }
+
+    // Spawn all the enemies at once
+    void SpawnEnemies()
+    {
         foreach (Transform child in transform)
         {
             GameObject enemy = Instantiate(enemyPrefab, child.transform.position, Quaternion.identity) as GameObject;
@@ -70,8 +89,22 @@ public class EnemySpawner : MonoBehaviour
         if (AllMembersDead())
         {
             Debug.Log("Empty Formation, Spawn Enemies");
-            SpawnEnemies();
+            SpawnUntilFull();
         }
+    }
+
+    Transform NextFreePosition()
+    {
+        // go over each position, see if any are Empty
+        foreach (Transform childPositionGameObject in transform)
+        {
+            if (childPositionGameObject.childCount == 0)
+            {
+                // we don't have a child in this position, return the object so we can have the position
+                return childPositionGameObject;
+            }
+        }
+        return null;
     }
 
     bool AllMembersDead()
