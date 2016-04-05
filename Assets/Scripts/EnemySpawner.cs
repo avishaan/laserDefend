@@ -45,17 +45,42 @@ public class EnemySpawner : MonoBehaviour
         if (movingRight)
         {
             transform.position += Vector3.right * speed * Time.deltaTime;
-        } else {
+        }
+        else {
             transform.position += Vector3.left * speed * Time.deltaTime;
         }
 
         float rightEdgeOfFormation = transform.position.x + 0.5f * width;
         float leftEdgeOfFormation = transform.position.x - 0.5f * width;
 
-        if (leftEdgeOfFormation < xmin) {
+        if (leftEdgeOfFormation < xmin)
+        {
             movingRight = true;
-        } else if (rightEdgeOfFormation > xmax) {
+        }
+        else if (rightEdgeOfFormation > xmax)
+        {
             movingRight = false;
         }
+
+        if (AllMembersDead())
+        {
+            Debug.Log("Empty Formation");
+        }
+    }
+
+    bool AllMembersDead()
+    {
+        // loop over all positions in formation, see if it has a child
+        foreach (Transform childPositionGameObject in transform)
+        {
+            // how many game objects are left?
+            if (childPositionGameObject.childCount > 0)
+            {
+                // if even a single game object has a child, there are members still alive
+                return false;
+            }
+        }
+
+        return true;
     }
 }
