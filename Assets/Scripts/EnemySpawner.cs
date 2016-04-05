@@ -24,6 +24,11 @@ public class EnemySpawner : MonoBehaviour
         xmax = rightBoundary.x;
         xmin = leftBoundary.x;
 
+        SpawnEnemies();
+
+    }
+
+    void SpawnEnemies(){
         foreach (Transform child in transform)
         {
             GameObject enemy = Instantiate(enemyPrefab, child.transform.position, Quaternion.identity) as GameObject;
@@ -64,7 +69,8 @@ public class EnemySpawner : MonoBehaviour
 
         if (AllMembersDead())
         {
-            Debug.Log("Empty Formation");
+            Debug.Log("Empty Formation, Spawn Enemies");
+            SpawnEnemies();
         }
     }
 
