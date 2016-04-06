@@ -7,6 +7,15 @@ public class EnemyBehaviour : MonoBehaviour
     public float health = 150f;
     public float projectileSpeed = 10f;
     public float shotsPerSecond = 0.5f;
+    public int scoreValue = 123;
+
+    private ScoreKeeper scoreKeeper;
+
+    void Start()
+    {
+        // get score gameobject (from hierarchy)
+        scoreKeeper = GameObject.Find("Score").GetComponent<ScoreKeeper>();
+    }
 
     void Update()
     {
@@ -34,6 +43,8 @@ public class EnemyBehaviour : MonoBehaviour
             {
                 missile.Hit();
                 Destroy(gameObject);
+                // add a score
+                scoreKeeper.Score(scoreValue);
             }
         }
     }
