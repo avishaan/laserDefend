@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public float projectileSpeed;
     public float fireRate = 0.2f;
     public float health = 250f;
+    public AudioClip fireSound;
 
     float xmin = -5;
     float xmax = 5;
